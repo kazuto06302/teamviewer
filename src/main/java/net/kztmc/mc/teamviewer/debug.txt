@@ -1,0 +1,5 @@
+debug name => raw name {name json}
+debug render1 => render()
+debug render2 => render() [after worldcheck]
+debug render3 => render() {name} [before draw maker & text]
+debug render marker => drawMarker()
