@@ -3,25 +3,30 @@ package net.kztmc.mc.teamviewer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.pipeline.*;
 import com.mojang.blaze3d.platform.*;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import lunarclient.apollo.common.v1.UuidOuterClass;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
-import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.rendertype.RenderSetup;
-import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Matrix4f;
-import java.awt.*;
+
+import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.renderer.*;
+
+import net.minecraft.client.renderer.rendertype.RenderSetup;
+import net.minecraft.client.renderer.rendertype.RenderType;
+
+import net.minecraft.network.chat.Component;
+import java.awt.Color;
+
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,20 +36,21 @@ public class TeamRenderer {
 
     private static final Minecraft client = Minecraft.getInstance();
 
-    public static void init(){
-        LevelRenderEvents.AFTER_SOLID_FEATURES.register((ctx) -> {
-            render(ctx.poseStack(), client.gameRenderer.getMainCamera(), client.getDeltaTracker().getGameTimeDeltaPartialTick(true));
-        });
+    public static void init() {
+        LevelRenderEvents.COLLECT_SUBMITS.register(ctx ->
+                render(ctx.poseStack(), ctx.submitNodeCollector(), client.gameRenderer.mainCamera(), client.getDeltaTracker().getGameTimeDeltaPartialTick(true)));
     }
 
     private static final RenderPipeline BASE = RenderPipelines.DEBUG_FILLED_BOX;
 
     private static final RenderPipeline PIPELINE = RenderPipelines.register(
-            RenderPipeline.builder(RenderPipelines.MATRICES_PROJECTION_SNIPPET)
+            RenderPipeline.builder()
                     .withLocation(Identifier.fromNamespaceAndPath("teamviewer", "pipeline/marker_see_through"))
                     .withVertexShader(BASE.getVertexShader())
                     .withFragmentShader(BASE.getFragmentShader())
-                    .withVertexFormat(DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.TRIANGLES)
+                    .withBindGroupLayout(BindGroupLayouts.MATRICES_PROJECTION)
+                    .withVertexBinding(0, DefaultVertexFormat.POSITION_COLOR)
+                    .withPrimitiveTopology(PrimitiveTopology.TRIANGLES)
                     .withColorTargetState(BASE.getColorTargetState())
                     .withDepthStencilState(Optional.empty())
                     .withCull(false)
@@ -53,7 +59,7 @@ public class TeamRenderer {
 
     public static final RenderType SEE_THROUGH = RenderType.create("teamviewer_marker_see_through", RenderSetup.builder(PIPELINE).createRenderSetup());
 
-    public static void render(PoseStack matrices, Camera camera, float t) {
+    public static void render(PoseStack matrices, SubmitNodeCollector collector, Camera camera, float t) {
         if (client.player == null) return;
 
         // timeout
@@ -62,8 +68,6 @@ public class TeamRenderer {
         Vec3 camPos = camera.position();
         matrices.pushPose();
         if (Objects.equals(Config.debug, "debug render1")) System.out.println("render1");
-
-        MultiBufferSource.BufferSource consumers = client.renderBuffers().bufferSource();
 
         TeamData.getMembers().values().forEach(m -> {
             // world
@@ -88,22 +92,21 @@ public class TeamRenderer {
                 matrices.mulPose(camera.rotation());
                 if(Config.marker_display) {
                     matrices.pushPose();
-                    drawMarker(matrices, consumers, m.color, dist);
+                    drawMarker(matrices, collector, m.color, dist);
                     matrices.popPose();
                 }
 
                 matrices.pushPose();
-                drawText(matrices, name, dist, pos);
+                drawText(matrices, collector, name, dist, pos);
                 matrices.popPose();
             }
             matrices.popPose();
         });
-        consumers.endBatch();
         matrices.popPose();
     }
 
     //draw
-    private static void drawMarker(PoseStack matrices, MultiBufferSource consumers, Color color, double dist) {
+    private static void drawMarker(PoseStack matrices, SubmitNodeCollector consumers, Color color, double dist) {
         if (dist < Config.marker_inv) return;
 
         float scale = Scale(dist);
@@ -118,65 +121,59 @@ public class TeamRenderer {
     }
 
 
-    private static void drawText(PoseStack matrices, String name, double dist, Vec3 pos) {
+    private static void drawText(PoseStack matrices, SubmitNodeCollector collector,
+                                 String name, double dist, Vec3 pos) {
         if (dist < Config.text_inv) return;
-
-        Minecraft client = Minecraft.getInstance();
         if (client.font == null) return;
 
         boolean inFov = isNearCrosshair(pos.add(0, 1, 0), Config.text_angle);
-
         boolean showName = shouldShow(Config.NAME_MODE, inFov);
         boolean showDist = shouldShow(Config.DIST_MODE, inFov);
-
-
         if (!showName && !showDist) return;
 
         matrices.pushPose();
         matrices.translate(0, 0, 0.05);
 
-        float distscale = Scale(dist);
-        float scale = (Config.text_size / 100) * distscale;
-
+        float scale = (Config.text_size / 100) * Scale(dist);
         matrices.scale(scale, -scale, scale);
 
-        MultiBufferSource.BufferSource consumers = client.renderBuffers().bufferSource();
+        // MultiBufferSource consumers = ... は削除
 
         int backgroundColor = 0;
-        if (Config.background){
-            backgroundColor = (int)(Minecraft.getInstance().options.getBackgroundOpacity(0.25F) * 255.0F) << 24 | 0x666666;
+        if (Config.background) {
+            backgroundColor = (int) (client.options.getBackgroundOpacity(0.25F) * 255.0F) << 24 | 0x666666;
         }
 
         if (showDist) {
             String distText = "(" + (int) dist + "m)";
             float x = -client.font.width(distText) / 2f;
-            client.font.drawInBatch(
-                    distText,
+            collector.submitText(
+                    matrices,
                     x,
                     -Config.dist_y * 10,
-                    Config.dist_color,
+                    Component.literal(distText).getVisualOrderText(),
                     false,
-                    matrices.last().pose(),
-                    consumers,
                     Font.DisplayMode.SEE_THROUGH,
+                    0xF000F0,
+                    Config.dist_color,
                     backgroundColor,
-                    0xF000F0
+                    0   // outlineColor(0 = なし)
             );
         }
 
         if (showName) {
             float x = -client.font.width(name) / 2f;
-            client.font.drawInBatch(
-                    name,
+            collector.submitText(
+                    matrices,
                     x,
                     -Config.name_y * 10,
-                    Config.name_color,
+                    Component.literal(name).getVisualOrderText(),
                     false,
-                    matrices.last().pose(),
-                    consumers,
                     Font.DisplayMode.SEE_THROUGH,
+                    0xF000F0,
+                    Config.name_color,
                     backgroundColor,
-                    0xF000F0
+                    0
             );
         }
 

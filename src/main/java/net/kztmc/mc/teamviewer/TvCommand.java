@@ -19,8 +19,8 @@ public class TvCommand {
                                 Minecraft client = Minecraft.getInstance();
                                 client.execute(() -> {
                                     // ModMenuIntegration 経由で YACL 設定画面を開く
-                                    client.setScreen(
-                                            new ModMenuIntegration().getModConfigScreenFactory().create(client.screen)
+                                    client.setScreenAndShow(
+                                            new ModMenuIntegration().getModConfigScreenFactory().create(client.gui.screen())
                                     );
                                 });
                                 return 1;
