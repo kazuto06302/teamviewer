@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "teamviewer",
-  "version": "1.0-release+26.1",
+  "version": "2.0-release+26.1",
   "name": "Teamviewer",
   "description": "Make your team members easy to understand!\nHoplite-compatible TeamViewer",
   "authors": ["kazut0"],
