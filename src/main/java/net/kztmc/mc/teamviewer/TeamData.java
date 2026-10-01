@@ -28,7 +28,11 @@ private static final Map<UuidOuterClass.Uuid, TeamMemberData> MEMBERS = new Conc
     }
 
     public static void update(UpdateTeamMembersMessage msg) {
+        var self = Minecraft.getInstance().player;
+        if (self == null) return;
+
         long now = System.currentTimeMillis();
+        UUID selfId = self.getGameProfile().id();
 
         for (var m : msg.getMembersList()) {
             var loc = m.getLocation();
@@ -36,7 +40,7 @@ private static final Map<UuidOuterClass.Uuid, TeamMemberData> MEMBERS = new Conc
             String world = loc.getWorld();
             Component name = Component.literal(m.getAdventureJsonPlayerName());
 
-            if (toMinecraftUuid(m.getPlayerUuid()).equals(Minecraft.getInstance().player.getGameProfile().id())) {
+            if (toMinecraftUuid(m.getPlayerUuid()).equals(selfId)) {
                 selfApolloWorld = world;
             }
 
