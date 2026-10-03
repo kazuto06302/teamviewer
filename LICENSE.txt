@@ -1,2 +1,0 @@
-Copyright (c) 2026 kzt
-LGPL-3.0
