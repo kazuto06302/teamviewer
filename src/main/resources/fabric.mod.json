@@ -10,7 +10,7 @@
     "issues": "https://dsc.gg/kazut0",
     "homepage": "https://modrinth.com/mod/teamviewer"
   },
-  "license": "LGPL-3.0",
+  "license": "MIT",
   "environment": "client",
   "entrypoints": {
     "client": [
