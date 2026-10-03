@@ -4,11 +4,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.pipeline.*;
 import com.mojang.blaze3d.platform.*;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
+
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
+
 import lunarclient.apollo.common.v1.UuidOuterClass;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.resources.Identifier;
@@ -25,6 +27,8 @@ import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
 
 import net.minecraft.network.chat.Component;
+import org.joml.Matrix4fc;
+
 import java.awt.Color;
 
 import java.util.Objects;
@@ -41,24 +45,15 @@ public class TeamRenderer {
                 render(ctx.poseStack(), ctx.submitNodeCollector(), client.gameRenderer.mainCamera(), client.getDeltaTracker().getGameTimeDeltaPartialTick(true)));
     }
 
-    private static final RenderPipeline BASE = RenderPipelines.DEBUG_FILLED_BOX;
-
     private static final RenderPipeline PIPELINE = RenderPipelines.register(
-            RenderPipeline.builder()
+            RenderPipeline.builder(RenderPipelines.DEBUG_FILLED_SNIPPET)
                     .withLocation(Identifier.fromNamespaceAndPath("teamviewer", "pipeline/marker_see_through"))
-                    .withVertexShader(BASE.getVertexShader())
-                    .withFragmentShader(BASE.getFragmentShader())
-                    .withBindGroupLayout(BindGroupLayouts.MATRICES_PROJECTION)
-                    .withVertexBinding(0, DefaultVertexFormat.POSITION_COLOR)
                     .withPrimitiveTopology(PrimitiveTopology.TRIANGLES)
-                    .withColorTargetState(BASE.getColorTargetState())
                     .withDepthStencilState(Optional.empty())
-                    .withCull(false)
                     .build()
     );
 
     public static final RenderType SEE_THROUGH = RenderType.create("teamviewer_marker_see_through", RenderSetup.builder(PIPELINE).createRenderSetup());
-
     public static void render(PoseStack matrices, SubmitNodeCollector collector, Camera camera, float t) {
         if (client.player == null) return;
 
@@ -89,7 +84,7 @@ public class TeamRenderer {
             // render
             if (!playeruuid.equals(client.getUser().getProfileId())) {
                 matrices.translate(rel.x, rel.y + Config.marker_y, rel.z);
-                matrices.mulPose(camera.rotation());
+                matrices.rotate(camera.rotation());
                 if(Config.marker_display) {
                     matrices.pushPose();
                     drawMarker(matrices, collector, m.color, dist);
