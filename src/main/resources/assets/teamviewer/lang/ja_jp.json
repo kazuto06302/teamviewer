@@ -1,0 +1,76 @@
+{
+  "modmenu.descriptionTranslation.teamviewer": "チームメンバーをわかりやすく！\nHoplite対応 Teamviewer\n\nバグなどがあったら報告をお願いします",
+
+  "teamviewer.config.main.title": "Teamviewer 設定画面",
+
+
+  "teamviewer.config.marker.name": "マーカー",
+  "teamviewer.config.marker.tooltip": "形、 大きさ、位置、不可視距離など、、",
+
+  "teamviewer.config.marker.enable.name": "マーカーを描画する",
+  "teamviewer.config.marker.enable.d": "マーカーを描画する",
+
+  "teamviewer.config.marker.marker_size.name": "マーカーの大きさ",
+  "teamviewer.config.marker.marker_size.d": "マーカーの大きさを変更する\n最小: 0.1 / 最大: 1.0",
+
+  "teamviewer.config.marker.shape.name": "マーカーの形",
+  "teamviewer.config.marker.shape.d": "マーカーの形を変更する",
+
+  "teamviewer.config.marker.marker_inv.name": "マーカーの不可視距離",
+  "teamviewer.config.marker.marker_inv.d": "近づいてマーカーが見えなくなる距離を変更する\n最小: 0 / 最大: 16",
+
+  "teamviewer.config.marker.height.name": "マーカーの高さ",
+  "teamviewer.config.marker.height.d": "マーカーの高さを変更する\n最小: 0 / 最大: 5",
+
+
+  "teamviewer.config.text.name": "文字",
+  "teamviewer.config.text.tooltip": "モード、 大きさ、 位置、 不可視距離など、、",
+
+  "teamviewer.config.text.mode.dist.name": "文字 [距離]",
+  "teamviewer.config.text.mode.d": "常時: 常時表示\n\n限定: 中心に近いものを表示\n\n非表示: 非表示",
+  "teamviewer.config.text.mode.name.name": "文字 [名前]",
+
+  "teamviewer.config.text.background.name": "文字の背景",
+  "teamviewer.config.text.background.d": "オンにすると文字に背景を追加します",
+
+  "teamviewer.config.text.text_size.name": "文字の大きさ",
+  "teamviewer.config.text.text_size.d": "文字の大きさを変更する\n最小: 0.1 / 最大: 5.0",
+
+  "teamviewer.config.text.text_inv.name": "文字の不可視距離",
+  "teamviewer.config.text.text_inv.d": "近づいてマーカーが見えなくなる距離を変更する\n最小: 0 / 最大: 32",
+
+  "teamviewer.config.text.text_angle.name": "文字の表示範囲",
+  "teamviewer.config.text.text_angle.d": "文字の表示範囲を変更する\n最小: 0 / 最大: 16",
+
+
+  "teamviewer.config.text.g.dist.name": "[距離]の設定",
+  "teamviewer.config.text.g.name.name": "[名前]の設定",
+
+  "teamviewer.config.text.g.dist.color.name": "[距離]の色",
+  "teamviewer.config.text.g.dist.color.d": "[距離]の色を変更する",
+  "teamviewer.config.text.g.dist.height.name": "[距離]の高さ",
+  "teamviewer.config.text.g.dist.height.d": "[距離]の高さを変更する\n最小: -10.0 / 最大: 10.0",
+
+  "teamviewer.config.text.g.name.color.name": "[名前]の色",
+  "teamviewer.config.text.g.name.color.d": "[名前]の色を変更する",
+  "teamviewer.config.text.g.name.height.name": "[名前]の高さ",
+  "teamviewer.config.text.g.name.height.d": "[名前]の高さを変更する\n最小: -10.0 / 最大: 10.0",
+
+  "teamviewer.config.option.name": "その他",
+  "teamviewer.config.option.tooltip": "その他の設定",
+
+  "teamviewer.config.option.all.name": "全ての機能",
+  "teamviewer.config.option.all.d": "オフにすると受信から描画まですべてを行いません\n試合中にバグが発生した場合にお使いください",
+
+  "teamviewer.config.option.debug.name": "Debug",
+  "teamviewer.config.option.debug.d": "開発者用の項目です\n中の値を変更しないでください",
+
+  "teamviewer.enum.markershape.invertedtriangle": "逆三角形",
+  "teamviewer.enum.markershape.triangle": "三角形",
+  "teamviewer.enum.markershape.diamond": "ひし形",
+  "teamviewer.enum.markershape.square": "四角形",
+
+  "teamviewer.enum.displaymode.always": "常時",
+  "teamviewer.enum.displaymode.target": "限定",
+  "teamviewer.enum.displaymode.hidden": "非表示"
+}

@@ -1,0 +1,76 @@
+{
+  "modmenu.descriptionTranslation.teamviewer": "Make your team members easy to understand!\nHoplite-compatible TeamViewer\n\nPlease report any bugs you find",
+
+  "teamviewer.config.main.title": "Teamviewer Config",
+
+
+  "teamviewer.config.marker.name": "Marker",
+  "teamviewer.config.marker.tooltip": "shape, size, position, invisible distance, etc..",
+
+  "teamviewer.config.marker.enable.name": "Draw a marker",
+  "teamviewer.config.marker.enable.d": "Draw a marker",
+
+  "teamviewer.config.marker.marker_size.name": "Marker Size",
+  "teamviewer.config.marker.marker_size.d": "Change the size of the marker\nmin: 0.1 / max: 1.0",
+
+  "teamviewer.config.marker.shape.name": "Marker Shape",
+  "teamviewer.config.marker.shape.d": "Change the shape of the marker",
+
+  "teamviewer.config.marker.marker_inv.name": "Marker's invisible distance",
+  "teamviewer.config.marker.marker_inv.d": "Change the Marker's invisible distance\nmin: 0 / max: 16",
+
+  "teamviewer.config.marker.height.name": "Marker Height",
+  "teamviewer.config.marker.height.d": "Change the Marker Height\nmin: 0 / max: 5",
+
+
+  "teamviewer.config.text.name": "Text",
+  "teamviewer.config.text.tooltip": "mode, size, position, invisible distance, etc..",
+
+  "teamviewer.config.text.mode.dist.name": "Text [Distance]",
+  "teamviewer.config.text.mode.d": "ALWAYS: Always display\n\nTARGET: Display if centered on the screen\n\nHIDDEN: Always hide",
+  "teamviewer.config.text.mode.name.name": "Text [Name]",
+
+  "teamviewer.config.text.background.name": "Text Background",
+  "teamviewer.config.text.background.d": "Turning this on will add a background to the text",
+
+  "teamviewer.config.text.text_size.name": "Text Size",
+  "teamviewer.config.text.text_size.d": "Change the size of the text\nmin: 0.1 / max: 5.0",
+
+  "teamviewer.config.text.text_inv.name": "Text's invisible distance",
+  "teamviewer.config.text.text_inv.d": "Change the Text's invisible distance\nmin: 0 / max: 30",
+
+  "teamviewer.config.text.text_angle.name": "Character display range",
+  "teamviewer.config.text.text_angle.d": "Change the Character display range\nmin: 0 / max: 16",
+
+
+  "teamviewer.config.text.g.dist.name": "[Distance] Settings",
+  "teamviewer.config.text.g.name.name": "[Name] Settings",
+
+  "teamviewer.config.text.g.dist.color.name": "Color",
+  "teamviewer.config.text.g.dist.color.d": "Change the color of the [distance]",
+  "teamviewer.config.text.g.dist.height.name": "Height",
+  "teamviewer.config.text.g.dist.height.d": "Change the height of the [distance]\nmin: -10.0 / max: 10.0",
+
+  "teamviewer.config.text.g.name.color.name": "Color",
+  "teamviewer.config.text.g.name.color.d": "Change the color of the [name]",
+  "teamviewer.config.text.g.name.height.name": "Height",
+  "teamviewer.config.text.g.name.height.d": "Change the height of the [name]t\nmin: -10.0 / max: 10.0",
+
+  "teamviewer.config.option.name": "Other",
+  "teamviewer.config.option.tooltip": "Other settings",
+
+  "teamviewer.config.option.all.name": "All Features",
+  "teamviewer.config.option.all.d": "If you turn it off, all operations from receiving to drawing will not be performed\nUse this if you encounter a bug during a match",
+
+  "teamviewer.config.option.debug.name": "Debug",
+  "teamviewer.config.option.debug.d": "This is for developers only\nDo not change the value",
+
+  "teamviewer.enum.markershape.invertedtriangle": "INVERTED TRIANGLE",
+  "teamviewer.enum.markershape.triangle": "TRIANGLE",
+  "teamviewer.enum.markershape.diamond": "DIAMOND",
+  "teamviewer.enum.markershape.square": "SQUARE",
+
+  "teamviewer.enum.displaymode.always": "ALWAYS",
+  "teamviewer.enum.displaymode.target": "TARGET",
+  "teamviewer.enum.displaymode.hidden": "HIDDEN"
+}
